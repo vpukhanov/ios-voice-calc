@@ -19,12 +19,12 @@ class CalculatorElement {
 }
 
 class NumberCalculatorElement: CalculatorElement {
-    var numberRepresentation: Double
+    var numberRepresentation: Int
     var isResult: Bool
     
     init(representation: String, isResult: Bool) {
         self.isResult = isResult
-        guard let numberRepresentation = Double(representation) else {
+        guard let numberRepresentation = Int(representation) else {
             fatalError("The string \"\(representation)\" does not have a number representation")
         }
         self.numberRepresentation = numberRepresentation
@@ -38,8 +38,23 @@ enum OperationRepresentation {
     case multiply
     case divide
     
-    static func representation(from str: String) -> OperationRepresentation {
-        return .add
+    static let addParts = ["прибав", "добав", "плюс", "+"]
+    static let subtractParts = ["вычест", "вычит", "минус", "−", "-"]
+    static let multiplyParts = ["множ", "×"]
+    static let divideParts = ["дели", "делен", "/", "÷"]
+    
+    static func representation(from str: String) -> OperationRepresentation? {
+        if OperationRepresentation.addParts.contains(where: str.contains) {
+            return .add
+        } else if OperationRepresentation.subtractParts.contains(where: str.contains) {
+            return .subtract
+        } else if OperationRepresentation.multiplyParts.contains(where: str.contains) {
+            return .multiply
+        } else if OperationRepresentation.divideParts.contains(where: str.contains) {
+            return .divide
+        } else {
+            return nil
+        }
     }
 }
 
@@ -47,7 +62,10 @@ class OperationCalculatorElement: CalculatorElement {
     var operationRepresentation: OperationRepresentation
     
     override init(representation: String) {
-        self.operationRepresentation = OperationRepresentation.representation(from: representation)
+        guard let operationRepresentation = OperationRepresentation.representation(from: representation) else {
+            fatalError("The string \"\(representation)\" does not have an operator representation")
+        }
+        self.operationRepresentation = operationRepresentation
         super.init(representation: representation)
     }
 }
@@ -60,7 +78,36 @@ class CalculatorModel: ObservableObject {
     }
     
     func process(utterance: [String]) -> Void {
-        print(utterance)
+        utterance.forEach { part in
+            addPart(part, lastElement: elements.first)
+        }
+    }
+    
+    private func addPart(_ part: String, lastElement: CalculatorElement?) {
+        if OperationRepresentation.representation(from: part) != nil {
+            // This is an operator
+            let newElement = OperationCalculatorElement(representation: part)
+            if lastElement != nil && lastElement is OperationCalculatorElement {
+                // Replace the old operator with the new one
+                elements.remove(at: 0)
+            }
+            // Insert the new operator
+            elements.insert(newElement, at: 0)
+        } else if Int(part) != nil {
+            // This is a number
+            var newElement: NumberCalculatorElement
+            if lastElement != nil && lastElement is NumberCalculatorElement && !(lastElement as! NumberCalculatorElement).isResult {
+                // There was a non-result number before it, append it instead
+                newElement = NumberCalculatorElement(representation: lastElement!.representation + part, isResult: false)
+                elements.remove(at: 0)
+            } else {
+                // There was nothing before it, a result number or an operator
+                newElement = NumberCalculatorElement(representation: part, isResult: false)
+            }
+            elements.insert(newElement, at: 0)
+        } else {
+            // This token should be ignored
+        }
     }
     
     #if DEBUG
