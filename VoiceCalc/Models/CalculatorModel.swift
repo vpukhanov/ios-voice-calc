@@ -89,6 +89,13 @@ class CalculatorModel: ObservableObject {
         elements.count > 1
     }
     
+    private lazy var russianFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.numberStyle = .spellOut
+        return formatter
+    }()
+    
     init(elements: [CalculatorElement]) {
         self.elements = elements
     }
@@ -115,6 +122,13 @@ class CalculatorModel: ObservableObject {
             addNumber(part, lastElement: elements.first)
         } else {
             // This token should be ignored
+            // There is still a chance that this is a number however 🤡
+            // because SpeechKit might have recognized "50" as "пятьдесят" 🤡🤡
+            // or even (in some cases) "писят" 🤡🤡🤡
+            // So we should try to convert this string to number
+            if let number = speltOutStringToNumber(part) {
+                addPart(String(number))
+            }
         }
     }
     
@@ -152,6 +166,18 @@ class CalculatorModel: ObservableObject {
         let resultElement = NumberCalculatorElement(representation: String(result), isResult: true)
         
         elements.insert(resultElement, at: 0)
+    }
+    
+    private func speltOutStringToNumber(_ str: String) -> Int? {
+        switch str {
+            // Praise the "amazing" Apple Russian language model 🙏
+        case "писят":
+            return 50
+        case "шисят":
+            return 60
+        default:
+            return russianFormatter.number(from: str)?.intValue
+        }
     }
     
     #if DEBUG
