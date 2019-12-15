@@ -14,18 +14,10 @@ struct ResultsStackView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             ForEach(model.elements, id: \.id) { element in
-                self.rowView(for: element)
+                ResultsStackRow(element: element)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-    
-    func rowView(for element: CalculatorElement) -> some View {
-        let isResult = element is NumberCalculatorElement && (element as! NumberCalculatorElement).isResult
-        return ResultsStackRow(
-            text: element.representation,
-            highlightColor: isResult ? Color.green : nil
-        )
     }
 }
 
@@ -36,14 +28,28 @@ struct ResultsStackView_Previews: PreviewProvider {
 }
 
 struct ResultsStackRow: View {
-    let text: String
-    
-    var highlightColor: Color? = nil
+    let element: CalculatorElement
     
     var body: some View {
-        Text(text)
-            .font(.system(size: 42))
-            .fontWeight(.light)
-            .foregroundColor(highlightColor)
+        VStack(spacing: 16) {
+            Text((equalsNeeded() ? "= " : "") + element.representation)
+                .font(.system(size: 42))
+                .fontWeight(.light)
+                .foregroundColor(highlightColor())
+        }
+    }
+    
+    func highlightColor() -> Color? {
+        if let numberElement = element as? NumberCalculatorElement, numberElement.isResult {
+            return .green
+        }
+        return nil
+    }
+    
+    func equalsNeeded() -> Bool {
+        if let numberElement = element as? NumberCalculatorElement {
+            return numberElement.isResult
+        }
+        return false
     }
 }

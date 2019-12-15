@@ -111,9 +111,6 @@ class SpeechRecognizer: ObservableObject {
         audioEngine.inputNode.removeTap(onBus: 0)
         try? AVAudioSession.sharedInstance().setActive(false)
         
-        // TODO Remove this
-        inProgressUtterance = "37+25×48 делить на 374+3.000.608 7315"
-        
         if accept {
             let tokenizedUtterance = inProgressUtterance.components(matchedWith: .decimalDigits, .letters, operationsCharacterSet)
             onNewUtterance?(tokenizedUtterance)

@@ -9,13 +9,14 @@
 import SwiftUI
 
 struct TrashButtonView: View {
+    var isRecording: Bool
     var primaryAction: (() -> Void)? = nil
     
     var body: some View {
         Button(action: {
             self.primaryAction?()
         }) {
-            Image(systemName: "trash")
+            Image(systemName: isRecording ? "multiply" : "trash")
                 .font(.largeTitle)
                 .padding()
                 .foregroundColor(.white)
@@ -28,6 +29,13 @@ struct TrashButtonView: View {
 
 struct TrashButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        TrashButtonView()
+        Group {
+            TrashButtonView(isRecording: false)
+                .previewLayout(.sizeThatFits)
+                .previewDisplayName("Not recording")
+            TrashButtonView(isRecording: true)
+                .previewLayout(.sizeThatFits)
+            .previewDisplayName("Recording in progress")
+        }
     }
 }

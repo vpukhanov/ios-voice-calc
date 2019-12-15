@@ -68,10 +68,26 @@ class OperationCalculatorElement: CalculatorElement {
         self.operationRepresentation = operationRepresentation
         super.init(representation: representation)
     }
+    
+    func execute(_ op1: Int, _ op2: Int) -> Int {
+        switch operationRepresentation {
+        case .add:
+            return op1 + op2
+        case .subtract:
+            return op1 - op2
+        case .multiply:
+            return op1 * op2
+        case .divide:
+            return op1 / op2
+        }
+    }
 }
 
 class CalculatorModel: ObservableObject {
     @Published var elements: [CalculatorElement]
+    var isResetable: Bool {
+        elements.count > 1
+    }
     
     init(elements: [CalculatorElement]) {
         self.elements = elements
@@ -79,35 +95,63 @@ class CalculatorModel: ObservableObject {
     
     func process(utterance: [String]) -> Void {
         utterance.forEach { part in
-            addPart(part, lastElement: elements.first)
+            addPart(part)
         }
+        tryProcessPreviousOperation()
     }
     
-    private func addPart(_ part: String, lastElement: CalculatorElement?) {
+    func reset() {
+        elements = [
+            NumberCalculatorElement(representation: "0", isResult: true)
+        ]
+    }
+    
+    private func addPart(_ part: String) {
+        let part = part.lowercased()
         if OperationRepresentation.representation(from: part) != nil {
-            // This is an operator
-            let newElement = OperationCalculatorElement(representation: part)
-            if lastElement != nil && lastElement is OperationCalculatorElement {
-                // Replace the old operator with the new one
-                elements.remove(at: 0)
-            }
-            // Insert the new operator
-            elements.insert(newElement, at: 0)
+            tryProcessPreviousOperation()
+            addOperator(part, lastElement: elements.first)
         } else if Int(part) != nil {
-            // This is a number
-            var newElement: NumberCalculatorElement
-            if lastElement != nil && lastElement is NumberCalculatorElement && !(lastElement as! NumberCalculatorElement).isResult {
-                // There was a non-result number before it, append it instead
-                newElement = NumberCalculatorElement(representation: lastElement!.representation + part, isResult: false)
-                elements.remove(at: 0)
-            } else {
-                // There was nothing before it, a result number or an operator
-                newElement = NumberCalculatorElement(representation: part, isResult: false)
-            }
-            elements.insert(newElement, at: 0)
+            addNumber(part, lastElement: elements.first)
         } else {
             // This token should be ignored
         }
+    }
+    
+    private func addOperator(_ part: String, lastElement: CalculatorElement?) {
+        let newElement = OperationCalculatorElement(representation: part)
+        if lastElement != nil && lastElement is OperationCalculatorElement {
+            // Replace the old operator with the new one
+            elements.remove(at: 0)
+        }
+        // Insert the new operator
+        elements.insert(newElement, at: 0)
+    }
+    
+    private func addNumber(_ part: String, lastElement: CalculatorElement?) {
+        var newElement: NumberCalculatorElement
+        if lastElement != nil && lastElement is NumberCalculatorElement && !(lastElement as! NumberCalculatorElement).isResult {
+            // There was a non-result number before it, append it instead
+            newElement = NumberCalculatorElement(representation: lastElement!.representation + part, isResult: false)
+            elements.remove(at: 0)
+        } else {
+            // There was nothing before it, a result number or an operator
+            newElement = NumberCalculatorElement(representation: part, isResult: false)
+        }
+        elements.insert(newElement, at: 0)
+    }
+    
+    private func tryProcessPreviousOperation() {
+        if elements.count < 3 { return }
+        
+        guard let secondOperand = elements[0] as? NumberCalculatorElement else { return }
+        guard let operation = elements[1] as? OperationCalculatorElement else { return }
+        guard let firstOperand = elements[2] as? NumberCalculatorElement else { return }
+        
+        let result = operation.execute(firstOperand.numberRepresentation, secondOperand.numberRepresentation)
+        let resultElement = NumberCalculatorElement(representation: String(result), isResult: true)
+        
+        elements.insert(resultElement, at: 0)
     }
     
     #if DEBUG

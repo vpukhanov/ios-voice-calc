@@ -27,6 +27,12 @@ struct MainScreen: View {
             ScrollView {
                 ResultsStackView(model: model)
                     .padding(.horizontal)
+                
+                // This adds some padding so content does not
+                // get hidden behind the button
+                Rectangle()
+                    .frame(height: 60)
+                    .opacity(0)
             }
             
             // Recording button
@@ -44,9 +50,13 @@ struct MainScreen: View {
                         }
                     )
                         .shadow(radius: 2)
-                    if recognizer.isActive {
-                        TrashButtonView(primaryAction: {
-                            self.recognizer.stopRecording(accept: false)
+                    if recognizer.isActive || model.isResetable {
+                        TrashButtonView(isRecording: recognizer.isActive, primaryAction: {
+                            if self.recognizer.isActive {
+                                self.recognizer.stopRecording(accept: false)
+                            } else {
+                                self.model.reset()
+                            }
                         })
                             .shadow(radius: 2)
                     }
