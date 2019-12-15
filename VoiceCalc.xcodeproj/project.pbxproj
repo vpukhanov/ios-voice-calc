@@ -13,6 +13,10 @@
 		F726F05E23A602CD00D65A54 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F726F05D23A602CD00D65A54 /* Assets.xcassets */; };
 		F726F06123A602CD00D65A54 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F726F06023A602CD00D65A54 /* Preview Assets.xcassets */; };
 		F726F06423A602CD00D65A54 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F726F06223A602CD00D65A54 /* LaunchScreen.storyboard */; };
+		F726F06E23A6030200D65A54 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F726F06D23A6030200D65A54 /* MainScreen.swift */; };
+		F726F07023A6077D00D65A54 /* ResultsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F726F06F23A6077D00D65A54 /* ResultsStackView.swift */; };
+		F726F07223A60A8B00D65A54 /* RecordingButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F726F07123A60A8B00D65A54 /* RecordingButtonView.swift */; };
+		F726F07523A60B2C00D65A54 /* CalculatorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F726F07423A60B2C00D65A54 /* CalculatorModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,10 @@
 		F726F06023A602CD00D65A54 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F726F06323A602CD00D65A54 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F726F06523A602CD00D65A54 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F726F06D23A6030200D65A54 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		F726F06F23A6077D00D65A54 /* ResultsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsStackView.swift; sourceTree = "<group>"; };
+		F726F07123A60A8B00D65A54 /* RecordingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingButtonView.swift; sourceTree = "<group>"; };
+		F726F07423A60B2C00D65A54 /* CalculatorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +64,9 @@
 		F726F05623A602CA00D65A54 /* VoiceCalc */ = {
 			isa = PBXGroup;
 			children = (
+				F726F07323A60B1D00D65A54 /* Models */,
+				F726F06C23A602E700D65A54 /* Views */,
+				F726F06B23A602E100D65A54 /* Screens */,
 				F726F05723A602CA00D65A54 /* AppDelegate.swift */,
 				F726F05923A602CA00D65A54 /* SceneDelegate.swift */,
 				F726F05B23A602CA00D65A54 /* ContentView.swift */,
@@ -73,6 +84,31 @@
 				F726F06023A602CD00D65A54 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		F726F06B23A602E100D65A54 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				F726F06D23A6030200D65A54 /* MainScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		F726F06C23A602E700D65A54 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F726F06F23A6077D00D65A54 /* ResultsStackView.swift */,
+				F726F07123A60A8B00D65A54 /* RecordingButtonView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F726F07323A60B1D00D65A54 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F726F07423A60B2C00D65A54 /* CalculatorModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,9 +182,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F726F07023A6077D00D65A54 /* ResultsStackView.swift in Sources */,
+				F726F06E23A6030200D65A54 /* MainScreen.swift in Sources */,
 				F726F05823A602CA00D65A54 /* AppDelegate.swift in Sources */,
 				F726F05A23A602CA00D65A54 /* SceneDelegate.swift in Sources */,
+				F726F07223A60A8B00D65A54 /* RecordingButtonView.swift in Sources */,
 				F726F05C23A602CA00D65A54 /* ContentView.swift in Sources */,
+				F726F07523A60B2C00D65A54 /* CalculatorModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

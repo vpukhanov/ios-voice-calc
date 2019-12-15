@@ -9,13 +9,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var model: CalculatorModel
+    
     var body: some View {
-        Text("Hello, World!")
+        MainScreen(model: model)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(model: CalculatorModel.debugModel)
     }
 }
