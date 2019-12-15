@@ -59,6 +59,10 @@ class CalculatorModel: ObservableObject {
         self.elements = elements
     }
     
+    func process(utterance: [String]) -> Void {
+        print(utterance)
+    }
+    
     #if DEBUG
     static let debugModel = CalculatorModel(elements: [
         NumberCalculatorElement(representation: "3", isResult: true),

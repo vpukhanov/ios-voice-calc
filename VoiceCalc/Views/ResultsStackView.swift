@@ -12,7 +12,7 @@ struct ResultsStackView: View {
     @ObservedObject var model: CalculatorModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 16) {
             ForEach(model.elements, id: \.id) { element in
                 self.rowView(for: element)
             }
@@ -42,7 +42,8 @@ struct ResultsStackRow: View {
     
     var body: some View {
         Text(text)
-            .font(.largeTitle)
+            .font(.system(size: 42))
+            .fontWeight(.light)
             .foregroundColor(highlightColor)
     }
 }
