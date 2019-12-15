@@ -180,7 +180,6 @@ class CalculatorModel: ObservableObject {
         }
     }
     
-    #if DEBUG
     static let debugModel = CalculatorModel(elements: [
         NumberCalculatorElement(representation: "3", isResult: true),
         NumberCalculatorElement(representation: "1", isResult: false),
@@ -190,5 +189,4 @@ class CalculatorModel: ObservableObject {
         OperationCalculatorElement(representation: "+"),
         NumberCalculatorElement(representation: "2", isResult: false)
     ])
-    #endif
 }

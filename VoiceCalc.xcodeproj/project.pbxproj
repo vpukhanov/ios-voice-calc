@@ -25,7 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F726F05423A602CA00D65A54 /* VoiceCalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceCalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F726F05423A602CA00D65A54 /* VoxCalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoxCalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F726F05723A602CA00D65A54 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F726F05923A602CA00D65A54 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F726F05B23A602CA00D65A54 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -60,13 +60,14 @@
 			children = (
 				F726F05623A602CA00D65A54 /* VoiceCalc */,
 				F726F05523A602CA00D65A54 /* Products */,
+				F7A79B1123A655BF0049D987 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		F726F05523A602CA00D65A54 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F726F05423A602CA00D65A54 /* VoiceCalc.app */,
+				F726F05423A602CA00D65A54 /* VoxCalc.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -142,6 +143,13 @@
 			path = Mustard;
 			sourceTree = "<group>";
 		};
+		F7A79B1123A655BF0049D987 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -159,7 +167,7 @@
 			);
 			name = VoiceCalc;
 			productName = VoiceCalc;
-			productReference = F726F05423A602CA00D65A54 /* VoiceCalc.app */;
+			productReference = F726F05423A602CA00D65A54 /* VoxCalc.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -370,7 +378,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ru.pukhanov.VoiceCalc;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = VoxCalc;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -390,7 +398,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ru.pukhanov.VoiceCalc;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = VoxCalc;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
