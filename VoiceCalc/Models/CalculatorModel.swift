@@ -125,7 +125,7 @@ class CalculatorModel: ObservableObject {
             // There is still a chance that this is a number however 🤡
             // because SpeechKit might have recognized "50" as "пятьдесят" 🤡🤡
             // or even (in some cases) "писят" 🤡🤡🤡
-            // So we should try to convert this string to number
+            // So we should try to convert this string to a number
             if let number = speltOutStringToNumber(part) {
                 addPart(String(number))
             }
@@ -170,11 +170,9 @@ class CalculatorModel: ObservableObject {
     
     private func speltOutStringToNumber(_ str: String) -> Int? {
         switch str {
-            // Praise the "amazing" Apple Russian language model 🙏
+            // Praise the amazing Apple Russian language model 🙏
         case "писят":
             return 50
-        case "шисят":
-            return 60
         default:
             return russianFormatter.number(from: str)?.intValue
         }
