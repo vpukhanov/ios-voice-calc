@@ -42,6 +42,8 @@ struct ResultsStackRow: View {
     func highlightColor() -> Color? {
         if let numberElement = element as? NumberCalculatorElement, numberElement.isResult {
             return .green
+        } else if element is ErrorCalculatorElement {
+            return .red
         }
         return nil
     }

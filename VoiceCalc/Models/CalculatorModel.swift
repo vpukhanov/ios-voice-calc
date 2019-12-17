@@ -18,6 +18,19 @@ class CalculatorElement {
     }
 }
 
+enum CalculatorErrors: Error {
+    case divideByZero
+}
+
+class ErrorCalculatorElement: CalculatorElement {
+    var error: Error
+    
+    init(error: Error) {
+        self.error = error
+        super.init(representation: "💣 Ошибка!")
+    }
+}
+
 class NumberCalculatorElement: CalculatorElement {
     var numberRepresentation: Int
     var isResult: Bool
@@ -69,7 +82,7 @@ class OperationCalculatorElement: CalculatorElement {
         super.init(representation: representation)
     }
     
-    func execute(_ op1: Int, _ op2: Int) -> Int {
+    func execute(_ op1: Int, _ op2: Int) throws -> Int {
         switch operationRepresentation {
         case .add:
             return op1 + op2
@@ -78,6 +91,9 @@ class OperationCalculatorElement: CalculatorElement {
         case .multiply:
             return op1 * op2
         case .divide:
+            if op2 == 0 {
+                throw CalculatorErrors.divideByZero
+            }
             return op1 / op2
         }
     }
@@ -101,10 +117,14 @@ class CalculatorModel: ObservableObject {
     }
     
     func process(utterance: [String]) -> Void {
-        utterance.forEach { part in
-            addPart(part)
+        do {
+            try utterance.forEach { part in
+                try addPart(part)
+            }
+            try processPreviousOperation()
+        } catch {
+            elements.insert(ErrorCalculatorElement(error: error), at: 0)
         }
-        tryProcessPreviousOperation()
     }
     
     func reset() {
@@ -113,10 +133,10 @@ class CalculatorModel: ObservableObject {
         ]
     }
     
-    private func addPart(_ part: String) {
+    private func addPart(_ part: String) throws {
         let part = part.lowercased()
         if OperationRepresentation.representation(from: part) != nil {
-            tryProcessPreviousOperation()
+            try processPreviousOperation()
             addOperator(part, lastElement: elements.first)
         } else if Int(part) != nil {
             addNumber(part, lastElement: elements.first)
@@ -127,7 +147,7 @@ class CalculatorModel: ObservableObject {
             // or even (in some cases) "писят" 🤡🤡🤡
             // So we should try to convert this string to a number
             if let number = speltOutStringToNumber(part) {
-                addPart(String(number))
+                try addPart(String(number))
             }
         }
     }
@@ -155,14 +175,14 @@ class CalculatorModel: ObservableObject {
         elements.insert(newElement, at: 0)
     }
     
-    private func tryProcessPreviousOperation() {
+    private func processPreviousOperation() throws {
         if elements.count < 3 { return }
         
         guard let secondOperand = elements[0] as? NumberCalculatorElement else { return }
         guard let operation = elements[1] as? OperationCalculatorElement else { return }
         guard let firstOperand = elements[2] as? NumberCalculatorElement else { return }
         
-        let result = operation.execute(firstOperand.numberRepresentation, secondOperand.numberRepresentation)
+        let result = try operation.execute(firstOperand.numberRepresentation, secondOperand.numberRepresentation)
         let resultElement = NumberCalculatorElement(representation: String(result), isResult: true)
         
         elements.insert(resultElement, at: 0)
@@ -170,7 +190,7 @@ class CalculatorModel: ObservableObject {
     
     private func speltOutStringToNumber(_ str: String) -> Int? {
         switch str {
-            // Praise the amazing Apple Russian language model 🙏
+        // Praise the amazing Apple Russian language model 🙏
         case "писят":
             return 50
         default:
